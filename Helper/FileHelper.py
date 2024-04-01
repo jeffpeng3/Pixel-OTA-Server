@@ -1,5 +1,5 @@
 from os import path, mkdir, remove, listdir,rmdir
-from certGenerate import generateCert
+from Helper.CertGenerate import generateCert
 
 
 def checkCert():
@@ -20,5 +20,3 @@ def checkCert():
 def checkdir():
     if not path.exists("ota"):
         mkdir("ota")
-    if not path.exists("cache"):
-        mkdir("cache")
