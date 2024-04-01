@@ -1,6 +1,5 @@
-cert/*
-cache/*
-ota/*
+cert
+ota
 .vscode/*
-__pycache__/*
+*__pycache__
 custota-tool

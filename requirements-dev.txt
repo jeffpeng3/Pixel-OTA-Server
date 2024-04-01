@@ -1,2 +1,4 @@
 selectolax
 aiohttp
+quart
+cryptography
