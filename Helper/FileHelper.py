@@ -1,5 +1,5 @@
 from os import path, mkdir, remove, listdir,rmdir
-from CertGenerate import generateCert
+from Helper.CertGenerate import generateCert
 
 
 def checkCert():
