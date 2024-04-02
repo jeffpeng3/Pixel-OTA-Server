@@ -53,8 +53,6 @@ async def getCert():
 async def info():
     return str(app.OTAServer.lastest)
 
-
-if __name__ == "__main__":
-    checkdir()
-    checkCert()
-    app.run("0.0.0.0", use_reloader=False)
+checkdir()
+checkCert()
+app.run("0.0.0.0", use_reloader=False)

@@ -5,10 +5,12 @@ RUN pip install --user -r /requirements-dev.txt
 
 FROM base
 COPY --from=builder /root/.local /root/.local
-COPY src /app
+COPY . /app
 WORKDIR /app
+RUN ls -la
 
 # update PATH environment variable
 ENV PATH=/home/app/.local/bin:$PATH
 
-CMD ["/bin/sh"]
+EXPOSE 5000
+CMD ["python", "-u", "main.py"]
