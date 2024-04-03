@@ -11,9 +11,9 @@
 5. Install the cert.pem you just downloaded as a csig certificate.
 6. Congratulations on completing your setup!
 
-## docker cli
+## Docker cli
 
-### deploy command
+### Deploy command
 
 ```bash
 docker run -d \
