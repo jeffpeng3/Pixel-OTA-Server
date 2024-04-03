@@ -143,7 +143,7 @@ class OTAChecker:
         if self.lastest is None:
             return
         filename = self.lastest.fName
-        if path.exists(f"ota/{deviceCodeName}.json"):        
+        if path.exists(f"ota/{deviceCodeName}.json"):
             remove(f"ota/{deviceCodeName}.json")
         proc = await create_subprocess_exec(
             "./custota-tool",
