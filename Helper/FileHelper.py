@@ -1,4 +1,4 @@
-from os import path, mkdir, remove, listdir,rmdir
+from os import path, mkdir, remove, listdir
 from Helper.CertGenerate import generateCert
 
 
@@ -12,10 +12,11 @@ def checkCert():
         for i in file:
             print(f"Removing {i}")
             remove(f"cert/{i}")
-        rmdir("cert")
-    mkdir("cert")
+    if not path.exists("cert"):
+        mkdir("cert")
     generateCert()
     print("Certificate generated successfully.")
+
 
 def checkdir():
     if not path.exists("ota"):

@@ -1,14 +1,13 @@
-
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives import hashes
 from cryptography.x509.oid import NameOID
 from datetime import datetime, timedelta
-from os import getenv, listdir, remove
+from os import getenv, listdir, remove, path
 from cryptography import x509
 from datetime import timezone
-UTC = timezone.utc
 
+UTC = timezone.utc
 
 
 def generateCert():
@@ -58,9 +57,10 @@ def generateCert():
                 encryption_algorithm=serialization.NoEncryption(),
             )
         )
-    for i in listdir("ota"):
-        if i.endswith(".csig"):
-            remove(f"ota/{i}")
+    if path.exists("ota"):
+        for i in listdir("ota"):
+            if i.endswith(".csig"):
+                remove(f"ota/{i}")
 
 
 if __name__ == "__main__":
