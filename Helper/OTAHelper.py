@@ -2,11 +2,12 @@ from selectolax.lexbor import LexborHTMLParser
 from http.cookies import BaseCookie
 from asyncio import sleep, create_task, create_subprocess_exec
 from asyncio.subprocess import PIPE
-from dataclasses import dataclass,field
+from dataclasses import dataclass, field
 from aiohttp import ClientSession
 from typing import Optional
 from re import compile
 from os import path, getenv, remove, listdir
+from zipfile import ZipFile
 
 deviceCodeName = getenv("DEVICE_CODE_NAME", "husky")
 
@@ -84,6 +85,8 @@ class OTAChecker:
         filename = self.lastest.fName
         if not path.exists(f"./ota/{filename}"):
             await self.download()
+        if not path.exists("./ota/ota.pem"):
+            await self.extractPem()
         if not path.exists(f"./ota/{filename}.csig"):
             await self.genCsig()
         await self.updateOTAInfo()
@@ -97,6 +100,13 @@ class OTAChecker:
                     while chunk := await res.content.read(1024):
                         f.write(chunk)
 
+    async def extractPem(self):
+        if self.lastest is None:
+            return
+        with ZipFile(f"./ota/{self.lastest.fName}", "r") as myzip:
+            with open("ota/ota.pem", "wb") as f:
+                f.write(myzip.read("META-INF/com/android/otacert"))
+
     async def genCsig(self):
         if self.lastest is None:
             return
@@ -104,12 +114,12 @@ class OTAChecker:
         proc = await create_subprocess_exec(
             "./custota-tool",
             "gen-csig",
-            "--input",
-            f"ota/{filename}",
             "-C",
             "ota/ota.pem",
             "-c",
             "cert/cert.pem",
+            "-i",
+            f"ota/{filename}",
             "-k",
             "cert/privatekey.pem",
             "-o",
@@ -118,32 +128,37 @@ class OTAChecker:
             stderr=PIPE,
         )
         stdout, stderr = await proc.communicate()
-        print(f"=============================[gen-csig exited with {proc.returncode}]=============================")
+        print(
+            f"=============================[gen-csig exited with {proc.returncode}]============================="
+        )
         if stdout:
-            print(f"[stdout]\n{stdout.decode()}",end="")
+            print(f"[stdout]\n{stdout.decode()}", end="")
         if stderr:
-            print(f"[stderr]\n{stderr.decode()}",end="")
-        print("==================================================================================")
+            print(f"[stderr]\n{stderr.decode()}", end="")
+        print(
+            "=================================================================================="
+        )
 
     async def updateOTAInfo(self):
         if self.lastest is None:
             return
         filename = self.lastest.fName
+        if path.exists(f"ota/{deviceCodeName}.json"):        
+            remove(f"ota/{deviceCodeName}.json")
         proc = await create_subprocess_exec(
             "./custota-tool",
             "gen-update-info",
-            "-f",
-            "ota/husky.json",
             "-l",
             f"{filename}",
+            "-f",
+            f"ota/{deviceCodeName}.json",
             stdout=PIPE,
             stderr=PIPE,
         )
         stdout, stderr = await proc.communicate()
         print(f"========[gen-update-info exited with {proc.returncode}]========")
         if stdout:
-            print(f"[stdout]\n{stdout.decode()}",end="")
+            print(f"[stdout]\n{stdout.decode()}", end="")
         if stderr:
-            print(f"[stderr]\n{stderr.decode()}",end="")
+            print(f"[stderr]\n{stderr.decode()}", end="")
         print("===============================================")
-
