@@ -1,6 +1,14 @@
-# OTA Server For Pixel
+# Pixel OTA Server
 
-`OTA Server For Pixel` is a [Custota](https://github.com/chenxiaolong/Custota)'s OTA Server, used to regularly check and download the latest OTA from Google, use lastest `custota-tool` to generate csig and json, which can be accomplished by simply running this docker image.
+`Pixel OTA Server` is a [Custota](https://github.com/chenxiaolong/Custota)'s OTA Server
+
+## Features
+
+ * Auto download lastest OTA image
+ * Auto signed when downloaded
+ * Auto Extract OTA certificates
+
+, used to regularly check and download the latest OTA from Google, use lastest `custota-tool` to generate csig and json, which can be accomplished by simply running this docker image.
 
 ## Usage
 
