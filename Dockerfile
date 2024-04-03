@@ -5,7 +5,9 @@ RUN pip install --user -r /requirements-dev.txt
 
 FROM base
 COPY --from=builder /root/.local /root/.local
-COPY . /app
+COPY main.py /app
+COPY Helper /app/Helper
+COPY custota-tool /app
 WORKDIR /app
 RUN ls -la
 
