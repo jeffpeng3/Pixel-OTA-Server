@@ -60,7 +60,8 @@ jobs:
       - uses: docker/build-push-action@v5
         with:
           push: true
-          context: .
+          outputs: |
+            type=local,dest=.
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
           cache-from: type=gha
