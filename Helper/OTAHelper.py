@@ -1,13 +1,12 @@
-from selectolax.lexbor import LexborHTMLParser
-from http.cookies import BaseCookie
 from asyncio import sleep, create_task, create_subprocess_exec
-from asyncio.subprocess import PIPE
-from dataclasses import dataclass, field
-from aiohttp import ClientSession
-from typing import Optional
-from re import compile
+from selectolax.lexbor import LexborHTMLParser
 from os import path, getenv, remove, listdir
+from dataclasses import dataclass, field
+from http.cookies import BaseCookie
+from asyncio.subprocess import PIPE
+from aiohttp import ClientSession
 from zipfile import ZipFile
+from re import compile
 
 deviceCodeName = getenv("DEVICE_CODE_NAME", "husky")
 
@@ -20,9 +19,9 @@ regexPattern = compile(
 class OTAInfo:
     androidVer: str
     buildVer: str
-    subVer: Optional[str]
+    subVer: str | None
     date: str
-    user: Optional[str]
+    user: str | None
     DLLink: str
     fName: str = field(init=False)
 
@@ -32,7 +31,7 @@ class OTAInfo:
 
 class OTAChecker:
     def __init__(self) -> None:
-        self.lastest: Optional[OTAInfo] = None
+        self.lastest: None | OTAInfo = None
 
     async def fetchLastestOTA(self):
         async with ClientSession() as s:
