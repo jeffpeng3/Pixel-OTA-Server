@@ -1,4 +1,0 @@
-selectolax
-aiohttp
-quart
-cryptography
