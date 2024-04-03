@@ -6,7 +6,7 @@ RUN pip install --user -r /requirements-dev.txt
 FROM base
 COPY --from=builder /root/.local /root/.local
 COPY . /app
-RUN rm -rf .* *.md *.txt
+RUN rm -rf .git* *.md *.txt
 WORKDIR /app
 RUN ls -la
 
