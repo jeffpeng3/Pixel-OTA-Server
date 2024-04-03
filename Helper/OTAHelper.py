@@ -63,7 +63,7 @@ class OTAChecker:
                 break
         self.cleanup()
         create_task(self.updateOTAFile())
-        await sleep(86400)
+        await sleep(21600)
         create_task(self.fetchLastestOTA())
 
     def cleanup(self):
