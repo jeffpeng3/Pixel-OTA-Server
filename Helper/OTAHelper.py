@@ -79,20 +79,26 @@ class OTAChecker:
             remove(f"./ota/{file}")
 
     async def updateOTAFile(self):
+        change = 0
         if self.lastest is None:
             return
         filename = self.lastest.fName
         if not path.exists(f"./ota/{filename}"):
             await self.download()
+            change += 1
         if not path.exists("./ota/ota.pem"):
             await self.extractPem()
+            change += 1
         if not path.exists(f"./ota/{filename}.csig"):
             await self.genCsig()
-        await self.updateOTAInfo()
+            change += 1
+        if change:
+            await self.updateOTAInfo()
 
     async def download(self):
         if self.lastest is None:
             return
+        print(f"Downloading {self.lastest.fName}")
         async with ClientSession() as s:
             async with s.get(self.lastest.DLLink) as res:
                 with open(f"./ota/{self.lastest.fName}", "wb") as f:
