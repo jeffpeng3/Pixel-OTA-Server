@@ -21,20 +21,7 @@ async def startup():
 
 @app.get("/ota/<filename>")
 async def staticFile(filename: str):
-    response = await send_from_directory("./ota/", filename)
-
-# Fix the range issue
-    pat = compile(r"\d+-(\d+)")
-    request_end = pat.findall(str(request.range))
-    response_end = pat.findall(str(response.content_range))
-    if request_end and response_end:
-        if request_end[0] != response_end[0]:
-            response.content_range.set(response.content_range.start, response.content_range.stop + 1, response.content_range.length)
-            print(response.content_range)
-
-# Fix the range issue
-
-    return response
+    return await send_from_directory("./ota/", filename)
 
 
 @app.get("/cert")
