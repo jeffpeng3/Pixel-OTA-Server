@@ -1,4 +1,4 @@
 selectolax==0.3.26
-aiohttp==3.11.8
+aiohttp==3.11.9
 quart==0.19.9
 cryptography==44.0.0
